@@ -75,19 +75,13 @@ contract('Gnft', (accounts) => {
 
 
     it('allows tokens to be buyed', async () => {
-      const account0 = '0xA8396C0D3Df03e909a114e217891a6f44C55c605';
-      const account1 = '0xE8AA202DbfB3c4bAff15bE72A44B82b698efE99F';
+      const account0 = accounts[0];
+      const account1 = accounts[1];
       const result = await contract.mint('abc')
-      const totalSupply = await contract.isApprovedForAll('0xA8396C0D3Df03e909a114e217891a6f44C55c605','0xE8AA202DbfB3c4bAff15bE72A44B82b698efE99F')
+      const allowBuy = await contract.allowBuy(0,2)
+      const totalSupply = await contract.isApprovedForAll(accounts[0],accounts[1])
       // SUCCESS
       assert.equal(totalSupply, true)
-      const event = result.logs[0].args
-      assert.equal(event.tokenId.toNumber(), 0, 'id is correct')
-      assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
-      assert.equal(event.to, accounts[0], 'to is correct')
-
-      // FAILURE: cannot mint same color twice
-      await contract.mint(j).should.be.rejected;
     })
   })
 
